@@ -1,0 +1,7 @@
+/agent01-math-assistant/venv1
+/agent02/venv
+.env
+/agent01-math-assistant/__pycache__/
+/agent02/*.pyc
+/agent02/*.pyo
+/agent02/.gradio/

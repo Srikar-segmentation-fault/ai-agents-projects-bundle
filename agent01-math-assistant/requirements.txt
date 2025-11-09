@@ -1,0 +1,10 @@
+langchain==0.3.23
+langchain-ibm==0.3.10
+langchain-community==0.3.16
+langchain-core>=0.3.0
+wikipedia==1.4.0
+openai==1.77.0
+langchain-openai==0.3.16
+ibm-watson-machine-learning
+python-dotenv==1.0.1
+langchain-groq==0.3.7

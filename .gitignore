@@ -5,3 +5,5 @@
 /agent02/*.pyc
 /agent02/*.pyo
 /agent02/.gradio/
+/agent03/__pycache__/
+/agent03/venv2/

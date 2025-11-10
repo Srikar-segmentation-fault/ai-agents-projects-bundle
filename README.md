@@ -154,3 +154,78 @@ This project is licensed under the **Hailey Thao Quach's Non-Commercial License*
 ## Contact
 
 For any questions or support, please contact [Hailey Thao Quach](mailto:hailey@haileyq.com).
+
+
+
+
+
+# 🤖 Agent03 — Multi-Agent AI Content Automation System
+
+Agent03 is a **CrewAI-powered multi-agent system** designed to automate research, content writing, and social media strategy.  
+This project demonstrates how multiple AI agents can collaborate like a human team — performing research, writing, and summarizing — all powered by LLMs and real-time tools.
+
+---
+
+## 🧠 **Overview**
+
+This system uses **CrewAI**, **LangChain**, and **Groq LLMs** to simulate a cognitive workflow:
+1. **Research Analyst Agent** → Gathers real-time insights from the web using Serper.
+2. **Writer Agent** → Converts research into polished, reader-friendly blog content.
+3. **Social Media Strategist Agent** → Creates short-form posts (LinkedIn, X/Twitter) from the blog summary.
+
+All agents work **sequentially** under a unified CrewAI workflow.
+
+---
+
+## 🚀 **Project Structure**
+
+agent03/
+├── agents.py # Defines all CrewAI agents (Researcher, Writer, Social Media)
+├── tasks.py # Defines each agent’s tasks and expected outputs
+├── workflow.py # Runs the entire Crew workflow (sequential pipeline)
+├── requirements.txt # Python dependencies
+
+---
+
+## ⚙️ **Setup Instructions**
+
+### 1️⃣ Clone the Repository
+
+git clone https://github.com/<your-username>/agent03.git
+cd agent03
+
+### 2️⃣ Create a Virtual Environment
+
+python -m venv venv2
+source venv2/bin/activate    # For Linux/Mac
+venv2\Scripts\activate  
+
+### 3️⃣ Install Dependencies
+pip install -r requirements.txt
+
+
+## Serper API (for web search)
+SERPER_API_KEY=your_serper_api_key_here
+
+## LLM API (OpenAI or Gemini etc.)
+OPENAI_API_KEY=your_groq_api_key_here
+
+
+## 🧩 How to Run
+
+Run the complete workflow directly:
+python workflow.py
+
+
+## 🧪 Example Run
+Enter topic for AI Research: generative ai
+🚀 Initializing Multi-Agent Workflow...
+
+🧩 Running workflow for topic: generative ai
+
+✅ Workflow Complete!
+📘 Task Outputs:
+1️⃣ Research Summary → Key trends in GenAI
+2️⃣ Blog Post → 4-paragraph article
+3️⃣ Social Media Summary → Tweets and LinkedIn posts
+📊 Token Usage: 8570 / 12000

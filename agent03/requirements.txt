@@ -1,0 +1,23 @@
+# CrewAI 101 (Updated) - Modern dependency versions
+# Compatible with Python 3.10–3.12
+
+# Core multi-agent framework
+crewai==0.165.1
+
+# CrewAI tools extension pack
+crewai-tools==0.45.0
+
+# Core LangChain + community tools
+langchain==0.3.7
+langchain-community==0.3.7
+
+# Databricks SDK (optional; some CrewAI examples use it)
+databricks-sdk==0.60.0
+
+# Environment variable handling
+python-dotenv==1.0.1
+
+# Optional utilities for nicer CLI/logging
+rich==13.9.2
+
+litellm

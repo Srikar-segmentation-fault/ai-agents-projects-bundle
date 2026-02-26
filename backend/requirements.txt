@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+langchain
+langchain-groq
+langchain-openai
+langchain-ibm
+langchain-community
+wikipedia
+crewai
+crewai-tools
+litellm
+langchainhub

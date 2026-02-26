@@ -5,9 +5,11 @@
 from core.logger import setup_logger
 from core.config import LLM_PREFERENCES
 from core.exceptions import LLMInitializationError
-from tools import all_tools, add_numbers, subtract_numbers, multiply_numbers, divide_numbers, power_numbers, wiki_tool
+from tools import all_tools
 
-from langchain.agents import initialize_agent
+# Modern LangChain 0.3+ agent API
+from langchain.agents import create_react_agent, AgentExecutor
+from langchain import hub
 
 # ------------------------------------------------------------
 # Step 1: Setup Logger
@@ -41,9 +43,10 @@ if not llm:
         if openai_api:
             llm = ChatOpenAI(
                 api_key=openai_api,
-                model=LLM_PREFERENCES["openai"]["model"]
+                model=LLM_PREFERENCES["openai"]["model"],
+                base_url=LLM_PREFERENCES["openai"]["base_url"],
             )
-            backend_used = "openai"
+            backend_used = "openai (Groq-compatible)"
     except Exception as e:
         logger.warning(f"OpenAI initialization failed: {e}")
 
@@ -73,13 +76,19 @@ logger.info(f"✅ Using {backend_used} backend.")
 # Step 3: Initialize Agent with Tools
 # ------------------------------------------------------------
 try:
-    agent = initialize_agent(
-        tools=all_tools,
+    # Pull the standard ReAct prompt from LangChain Hub
+    prompt = hub.pull("hwchase17/react")
+    react_agent = create_react_agent(
         llm=llm,
-        agent="structured-chat-zero-shot-react-description",
+        tools=all_tools,
+        prompt=prompt,
+    )
+    agent = AgentExecutor(
+        agent=react_agent,
+        tools=all_tools,
         verbose=True,
         handle_parsing_errors=True,
-        max_iterations=3,
+        max_iterations=5,
     )
     logger.info(f"🤖 Agent initialized successfully using {backend_used}.")
 except Exception as e:
@@ -91,14 +100,16 @@ except Exception as e:
 # Step 4: Define Query Runner
 # ------------------------------------------------------------
 def run_query(prompt: str):
-    """Run a query through the agent and log reasoning."""
+    """Run a query through the agent and return the result."""
     logger.info(f"💬 User Query: {prompt}")
     try:
         result = agent.invoke({"input": prompt})
         logger.info(f"🧩 Agent Output: {result}")
-        print("\n🧠 Result:", result)
+        # print("\n🧠 Result:", result) # Suppress print for API usage
+        return result
     except Exception as e:
         logger.error(f"❌ Agent failed: {e}")
+        return {"output": f"Error: {str(e)}"}
 
 
 # ------------------------------------------------------------

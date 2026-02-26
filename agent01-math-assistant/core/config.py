@@ -27,7 +27,8 @@ LLM_PREFERENCES = {
     },
     "openai": {
         "api_key": get_env_var("OPENAI_API_KEY"),
-        "model": get_env_var("OPENAI_MODEL", default="gpt-4o-mini"),
+        "model": get_env_var("OPENAI_MODEL_NAME", default="openai/gpt-oss-120b"),
+        "base_url": get_env_var("OPENAI_API_BASE_URL", default="https://api.groq.com/openai/v1"),
     },
     "watsonx": {
         "api_key": get_env_var("WATSONX_API_KEY"),

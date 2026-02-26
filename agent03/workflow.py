@@ -1,9 +1,8 @@
 # workflow.py
-import sys
 import time
 from crewai import Crew, Process
 from agents import AGENTS
-from tasks import TASKS
+from tasks import get_tasks
 
 
 TOKEN_LIMIT = 8000  # Groq safe buffer (12k TPM limit)
@@ -30,12 +29,18 @@ def print_token_budget(result):
         print("🧠 CrewAI agents will now stop to avoid hitting Groq rate limits.")
         print(f"💤 Cooling down for {COOLDOWN_TIME} seconds...\n")
         time.sleep(COOLDOWN_TIME)
-        sys.exit(0)  # clean stop — no traceback
+        raise RuntimeError(
+            f"Token limit reached ({total}/{TOKEN_LIMIT}). "
+            f"Cooled down for {COOLDOWN_TIME}s. Please retry."
+        )
 
 
 def run_workflow(topic: str):
     """Run the complete CrewAI multi-agent workflow."""
     print("🚀 Initializing Multi-Agent Workflow...\n")
+
+    # Fresh task instances per request — avoids shared state between API calls
+    tasks = get_tasks()
 
     crew = Crew(
         agents=[
@@ -44,9 +49,9 @@ def run_workflow(topic: str):
             AGENTS["Social Media Agent"]
         ],
         tasks=[
-            TASKS["Research Task"],
-            TASKS["Writer Task"],
-            TASKS["Social Media Task"]
+            tasks["Research Task"],
+            tasks["Writer Task"],
+            tasks["Social Media Task"]
         ],
         process=Process.sequential,
         verbose=True
@@ -71,10 +76,13 @@ def run_workflow(topic: str):
         print_token_budget(result)
         return result
 
+    except RuntimeError:
+        # Re-raise rate-limit errors (from print_token_budget) as-is
+        raise
     except Exception as e:
         print(f"\n❌ ERROR: {str(e)}")
         print("💡 Tip: You might be hitting Groq rate limits. Wait a few seconds and retry.")
-        sys.exit(1)
+        raise
 
 
 if __name__ == "__main__":
